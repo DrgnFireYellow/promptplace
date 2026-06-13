@@ -10,6 +10,17 @@ export default async function MainPage({ searchParams }) {
 
   const params = await searchParams;
 
+  async function createPrompt() {
+    "use server";
+    const newPrompt = await Prompt.create({ name: "Untitled Prompt" });
+    redirect(`/?promptID=${newPrompt._id.toString()}`);
+  }
+
+  if (prompts.length === 0) {
+    await createPrompt();
+    revalidatePath("/");
+  }
+
   const activePrompt = params.promptID
     ? await Prompt.findOne({ _id: params.promptID })
     : prompts[0];
@@ -29,11 +40,6 @@ export default async function MainPage({ searchParams }) {
     }
   }
 
-  async function createPrompt() {
-    "use server";
-    const newPrompt = await Prompt.create({ name: "Untitled Prompt" });
-    redirect(`/?promptID=${newPrompt._id.toString()}`);
-  }
 
   async function deletePrompt(formData) {
     "use server";
@@ -55,7 +61,7 @@ export default async function MainPage({ searchParams }) {
       `{{${fragment}}}`,
       params[`fragment.${fragment}`] || `{{${fragment}}}`,
     );
-  }, activePrompt.template);
+  }, activePrompt?.template || "");
 
   return (
     <div>
@@ -83,7 +89,7 @@ export default async function MainPage({ searchParams }) {
             <input
               type="hidden"
               name="promptID"
-              value={activePrompt._id.toString()}
+              value={activePrompt?._id.toString()}
             />
             {fragmentKeys.map((fragment) => (
               <label key={fragment}>
@@ -103,15 +109,15 @@ export default async function MainPage({ searchParams }) {
           <input
             type="text"
             name="name"
-            defaultValue={activePrompt.name}
-            key={`name_${activePrompt._id.toString()}`}
+            defaultValue={activePrompt?.name}
+            key={`name_${activePrompt?._id.toString()}`}
             required
             form="updateTemplate"
           />
           <textarea
             name="template"
-            defaultValue={activePrompt.template}
-            key={activePrompt._id.toString() || "empty"}
+            defaultValue={activePrompt?.template}
+            key={activePrompt?._id.toString() || "empty"}
             form="updateTemplate"
           ></textarea>
           <div className="buttonRow">
@@ -119,7 +125,7 @@ export default async function MainPage({ searchParams }) {
               <input
                 type="hidden"
                 name="promptID"
-                value={activePrompt._id.toString()}
+                value={activePrompt?._id.toString()}
               />
               <button type="submit">Save</button>
             </form>
@@ -127,7 +133,7 @@ export default async function MainPage({ searchParams }) {
               <input
                 type="hidden"
                 name="promptID"
-                value={activePrompt._id.toString()}
+                value={activePrompt?._id.toString()}
               />
               <button type="submit">Delete Prompt</button>
             </form>
