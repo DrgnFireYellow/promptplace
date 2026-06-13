@@ -149,6 +149,10 @@ button:active {
   border-radius: 5px;
 }
 
+#fragmentEditor p {
+  margin: 5px;
+}
+
 #compiledPrompt {
   padding: 5px;
   margin: 5px;

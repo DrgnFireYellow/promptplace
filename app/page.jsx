@@ -101,9 +101,9 @@ export default async function MainPage({ searchParams }) {
                 />
               </label>
             ))}
-            <button type="submit">Compile Prompt</button>
+            {fragmentKeys.length ? <button type="submit">Compile Prompt</button> : <p>No fragments yet! Create some with <code>{"{{Fragment Name}}"}</code></p>}
           </form>
-          <p id="compiledPrompt">{compiledPrompt}</p>
+          {fragmentKeys.length ? <p id="compiledPrompt">{compiledPrompt}</p> : null}
         </div>
         <div id="templateEditor">
           <input
