@@ -2,6 +2,11 @@
 Promptplace is a self-hosted tool to keep track of prompts for AI models. It features tools to store prompts and a simple templating language to add "fragments" or variables to your prompts that can be changed in an intuitive UI.
 ## Installation
 Promptplace requires a MongoDB server. If you do not have one already, please create or rent one.
+### Install Dependencies
+Before you can use Promptplace, you'll need to install the dependencies using NPM.
+```
+npm install
+```
 ### Setting up environment variables
 Create a `.env.local` file in your copy of this repository and set the `MONGODB_URL` environment variable to point to your MongoDB server and database.
 ```
